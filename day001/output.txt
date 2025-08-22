@@ -1,0 +1,35 @@
+Found 1 devices.
+Printing device properties using device count
+----------------------------------------------------
+[0,0] Name: NVIDIA A100-SXM4-80GB
+[0,0] Compute Capability: 8.0
+[0,0] Total Global Memory: 81049.6 MB
+[0,0] Multiprocessor Count: 108
+[0,0] MaxThreadsPerBlock: 1024
+[0,0] Clock Rate: 1410 MHz
+----------------------------------------------------
+Querying properties for N>device count
+----------------------------------------------------
+[0,0] Name: NVIDIA A100-SXM4-80GB
+[0,0] Compute Capability: 8.0
+[0,0] Total Global Memory: 81049.6 MB
+[0,0] Multiprocessor Count: 108
+[0,0] MaxThreadsPerBlock: 1024
+[0,0] Clock Rate: 1410 MHz
+----------------------------------------------------
+Set device failed for deviceID: 1
+----------------------------
+hello from GPU[0]: (block:1, threadx:0, thready:0)
+hello from GPU[0]: (block:1, threadx:1, thready:0)
+hello from GPU[0]: (block:1, threadx:0, thready:1)
+hello from GPU[0]: (block:1, threadx:1, thready:1)
+hello from GPU[0]: (block:2, threadx:0, thready:0)
+hello from GPU[0]: (block:2, threadx:1, thready:0)
+hello from GPU[0]: (block:2, threadx:0, thready:1)
+hello from GPU[0]: (block:2, threadx:1, thready:1)
+hello from GPU[0]: (block:0, threadx:0, thready:0)
+hello from GPU[0]: (block:0, threadx:1, thready:0)
+hello from GPU[0]: (block:0, threadx:0, thready:1)
+hello from GPU[0]: (block:0, threadx:1, thready:1)
+----------------------------
+hello from the cpu
