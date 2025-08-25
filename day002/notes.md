@@ -4,7 +4,7 @@
 1. [Overview](#1-overview)
 2. [Organizing my project](#2-project-organization)
 3. [Compiling and building](#3-compilation)
-3. [Results](results)
+3. [Results](#4-results)
 
 ## 1. Overview
 Understanding how to setup environment. Having written most of my scientific computing scripts in python, it's important for me to understand how to build a scalable, maintainable environment for CUDA code. I'm heavily relying on [2] for setting this up. This is to understand how to build larger project, importing files, libraries, using appropriate compiler flags, etc. Broadly, I explore the following:
