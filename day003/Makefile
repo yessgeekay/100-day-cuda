@@ -3,19 +3,19 @@ PROJECT1 = ./output1.o
 PROJECT2 = ./output2.o
 PROJECT3 = ./output3.o
 NVCC = nvcc
-SRCS = ./matmul.cu
+SRCS = ./main.cu ./kernels.cu
 # INCLUDES = -I./include
 # ARCH = -arch=sm_75
 # FLAGS = -Xcompiler "-Wall -O2"
 FLAGS0 = -O0 
-FLAGS1 = -O1 
+FLAGS1 = -O1
 FLAGS2 = -O2 
 FLAGS3 = -O3 
 
-build: $(PROJECT0) 
+debug: $(PROJECT1)
 
-$(PROJECT0): $(SRCS)
-	$(NVCC) $(ARCH) $(FLAGS0) $(INCLUDES) -o $(PROJECT0) $(SRCS)
+$(PROJECT1): $(SRCS)
+	$(NVCC) $(ARCH) $(FLAGS1) $(INCLUDES) -o $(PROJECT1) $(SRCS)
 
 all: $(PROJECT0) $(PROJECT1) $(PROJECT2) $(PROJECT3)
 

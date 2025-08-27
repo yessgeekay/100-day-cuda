@@ -65,18 +65,12 @@ __global__ void matmul_kernel(float* A, float* B, float* C, int N) {
 }
 
 // Helper function to create random matrix
-std::vector<std::vector<float>> create_random_matrix(int rows, int cols) {
-    std::vector<std::vector<float>> matrix(rows, std::vector<float>(cols));
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> dis(0.0f, 1.0f);
-    
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            matrix[i][j] = dis(gen);
+void create_random_matrix(std::vector<std::vector<float>>& matrix, int N) {
+    for (int i=0; i<N; ++i){
+        for (int j=0; j<N; ++j){
+            matrix[i][j] = (float)rand()/RAND_MAX;
         }
     }
-    return matrix;
 }
 
 
@@ -103,7 +97,6 @@ void flatten_matrix(const std::vector<std::vector<float>>& matrix, float* flat) 
 
 void print_few(std::vector<std::vector<float>>& matrix) {
     std::cout << "Verification (first 3x3 block):\n";
-    std::cout << "Simple version:\n";
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             std::cout << matrix[i][j] << " ";
@@ -115,7 +108,6 @@ void print_few(std::vector<std::vector<float>>& matrix) {
   
 void print_few(float* matrix, int rows) {
     std::cout << "Verification (first 3x3 block):\n";
-    std::cout << "Optimized version:\n";
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             std::cout << matrix[i*rows + j] << " ";
@@ -144,45 +136,42 @@ int main() {
     const int size = N * N * sizeof(float);
     
     std::cout << "Creating " << N << "x" << N << " matrices...\n";
+    std::vector<std::vector<float>> A(N, std::vector<float>(N));
+    std::vector<std::vector<float>> B(N, std::vector<float>(N));
+    std::vector<std::vector<float>> C(N, std::vector<float>(N));
+    create_random_matrix(A, N);
+    create_random_matrix(B, N);
     
-    // Create random matrices
-    auto A = create_random_matrix(N, N);
-    auto B = create_random_matrix(N, N);
-    std::vector<std::vector<float>> C;
-    
-    // Time the simple version
-    auto start = std::chrono::high_resolution_clock::now();
-    matmul_simple(A, B, C);
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    std::cout << "Simple version took: " << duration.count() << " ms\n";
+    auto cpu_time = time_it_host([&](){matmul_simple(A, B, C);});
+    std::cout << "Simple version took: " << cpu_time.count() << " ms\n";
     
     // Now try the optimized version with 1D arrays
     float* A_flat = new float[N * N];
     float* B_flat = new float[N * N];
     float* C_flat = new float[N * N];
+    float* C2flat = new float[N * N];
     
     flatten_matrix(A, A_flat);
     flatten_matrix(B, B_flat);
-    
-    start = std::chrono::high_resolution_clock::now();
-    matmul_optimized(A_flat, B_flat, C_flat, N, N, N);
-    end = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    std::cout << "Optimized version took: " << duration.count() << " ms\n";
+    flatten_matrix(C, C2flat);
 
-    print_few(C);
+    cpu_time = time_it_host([&](){
+        matmul_optimized(A_flat, B_flat, C_flat, N, N, N);});
+    std::cout << "Optimized version took: " << cpu_time.count() << " ms\n";
+    
+    bool correct = verify_result(C_flat, C2flat, N);
+    std::cout << "Verification: " << (correct ? "PASSED" : "FAILED") << std::endl;
     print_few(C_flat, N);
     
     std::cout << std::endl;
     std::cout << "Simple CUDA Matrix Multiplication (" << N << "x" << N << ")\n";
     
-    // 1. Allocate host (CPU) memory
-    float* h_A = (float*)malloc(size);
-    float* h_B = (float*)malloc(size);
-    float* h_C_cpu = (float*)malloc(size);  // CPU result
-    float* h_C_gpu = (float*)malloc(size);  // GPU result copied back
-    
+    // 1. Allocate host memory
+    float* h_A = new float[N*N];
+    float* h_B = new float[N*N];
+    float* h_C = new float[N*N];
+    float* h_Cg = new float[N*N]; // GPU result copied back
+
     // 2. Initialize matrices
     srand(42);  // For reproducible results
     init_matrix(h_A, N);
@@ -215,20 +204,15 @@ int main() {
     auto gpu_time = time_it_device([&](){
       matmul_kernel<<<gridSize, blockSize>>>(d_A, d_B, d_C, N);
     });
+    // Note that time_it_device synchronizes kernel
     
     // 7. Copy result back to host
-    cudaMemcpy(h_C_gpu, d_C, size, cudaMemcpyDeviceToHost);
+    cudaMemcpy(h_Cg, d_C, size, cudaMemcpyDeviceToHost);
     
     // 8. Run CPU version for comparison
-    auto cpu_time = time_it_host([&](){
-    matmul_optimized(h_A, h_B, h_C_cpu, N, N, N);
-    });
-    //auto cpu_start = std::chrono::high_resolution_clock::now();
-    //auto cpu_end = std::chrono::high_resolution_clock::now();
-    //auto cpu_time = std::chrono::duration_cast<std::chrono::milliseconds>(cpu_end - cpu_start);
-    
-    // 9. Verify results
-    bool correct = verify_result(h_C_cpu, h_C_gpu, N);
+    cpu_time = time_it_host([&](){matmul_optimized(h_A, h_B, h_C, N, N, N);});    
+
+    correct = verify_result(h_C, h_Cg, N);
     
     // 10. Print results
     std::cout << "\nResults:\n";
@@ -238,16 +222,11 @@ int main() {
     std::cout << "Verification: " << (correct ? "PASSED" : "FAILED") << std::endl;
     
     // Show a few result elements
-    print_few(h_C_gpu, N);
+    print_few(h_Cg, N);
    
     // 11. Cleanup
-    free(h_A); free(h_B); free(h_C_cpu); free(h_C_gpu);
+    delete[] h_A, h_B, h_C, h_Cg, A_flat, B_flat, C_flat;
     cudaFree(d_A); cudaFree(d_B); cudaFree(d_C);
-    
-    // Clean up memory
-    delete[] A_flat;
-    delete[] B_flat;
-    delete[] C_flat;
     
     return 0;
 }

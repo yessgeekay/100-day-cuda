@@ -1,16 +1,17 @@
-DAY ?=1
-# folder formatted as day002 
+DAY ?= 1
+# folder formatted as day002 
 DAY_NUM := $(shell printf "%03d" $(DAY))
 
-# Define the build command
+# Build the specified day, or the default
 .PHONY: build
 build:
 	$(MAKE) -C day$(DAY_NUM)
 
+.PHONY: all
+all:
+	$(MAKE) -C day$(DAY_NUM) all
+
+# Clean the specified day, or the default
+.PHONY: clean
 clean:
 	$(MAKE) -C day$(DAY_NUM) clean
-
-# A pattern rule to catch '1', '2', etc. from the command line
-%:
-	$(MAKE) build DAY=$@
-

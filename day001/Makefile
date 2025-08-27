@@ -1,9 +1,6 @@
-PROJECT = ./a.out
+PROJECT = ./output.o
 NVCC = nvcc
-SRCS = ./print.cu
-# INCLUDES = -I./include
-# ARCH = -arch=sm_75
-# FLAGS = -Xcompiler "-Wall -O2"
+SRCS = ./main.cu
 FLAGS = -O2
 
 all: $(PROJECT)

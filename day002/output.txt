@@ -1,17 +1,12 @@
 /data/seismo/kashyap/codes/100days/day002/output0.o
 Creating 1024x1024 matrices...
-Simple version took: 27051 ms
-Optimized version took: 3453 ms
+Simple version took: 13430 ms
+Optimized version took: 3697 ms
+Verification: PASSED
 Verification (first 3x3 block):
-Simple version:
-258.405 241.774 264.701 
-250.887 239.33 265.077 
-258.2 245.874 259.851 
-Verification (first 3x3 block):
-Optimized version:
-258.405 241.774 264.701 
-250.887 239.33 265.077 
-258.2 245.874 259.851 
+264.159 257.258 250.823 
+256.462 251.636 252.988 
+261.322 257.258 249.169 
 
 Simple CUDA Matrix Multiplication (1024x1024)
 max threads = 32
@@ -19,30 +14,24 @@ Grid size: 32x32
 Block size: 32x32
 
 Results:
-CPU Time: 3427 ms
-GPU Time: 4 ms
-Speedup: 856.75x
+CPU Time: 3640 ms
+GPU Time: 8 ms
+Speedup: 455x
 Verification: PASSED
 Verification (first 3x3 block):
-Optimized version:
 260.103 246.72 247.54 
 266.502 254.437 259.212 
 259.721 247.403 257.08 
 -------------------------------------------------
 /data/seismo/kashyap/codes/100days/day002/output1.o
 Creating 1024x1024 matrices...
-Simple version took: 3871 ms
-Optimized version took: 367 ms
+Simple version took: 4129 ms
+Optimized version took: 407 ms
+Verification: PASSED
 Verification (first 3x3 block):
-Simple version:
-261.609 252.962 249.465 
-257.945 244.15 245.462 
-254.787 245.253 247.24 
-Verification (first 3x3 block):
-Optimized version:
-261.609 252.962 249.465 
-257.945 244.15 245.462 
-254.787 245.253 247.24 
+264.159 257.258 250.823 
+256.462 251.636 252.988 
+261.322 257.258 249.169 
 
 Simple CUDA Matrix Multiplication (1024x1024)
 max threads = 32
@@ -50,30 +39,24 @@ Grid size: 32x32
 Block size: 32x32
 
 Results:
-CPU Time: 368 ms
-GPU Time: 3 ms
-Speedup: 122.667x
+CPU Time: 404 ms
+GPU Time: 7 ms
+Speedup: 57.7143x
 Verification: PASSED
 Verification (first 3x3 block):
-Optimized version:
 260.103 246.72 247.54 
 266.502 254.437 259.212 
 259.721 247.403 257.08 
 -------------------------------------------------
 /data/seismo/kashyap/codes/100days/day002/output2.o
 Creating 1024x1024 matrices...
-Simple version took: 1020 ms
-Optimized version took: 634 ms
+Simple version took: 1086 ms
+Optimized version took: 667 ms
+Verification: PASSED
 Verification (first 3x3 block):
-Simple version:
-254.34 253.829 255.597 
-249.38 250.615 248.33 
-253.835 252.833 254.254 
-Verification (first 3x3 block):
-Optimized version:
-254.34 253.829 255.597 
-249.38 250.615 248.33 
-253.835 252.833 254.254 
+264.159 257.258 250.823 
+256.462 251.636 252.988 
+261.322 257.258 249.169 
 
 Simple CUDA Matrix Multiplication (1024x1024)
 max threads = 32
@@ -81,30 +64,24 @@ Grid size: 32x32
 Block size: 32x32
 
 Results:
-CPU Time: 646 ms
-GPU Time: 3 ms
-Speedup: 215.333x
+CPU Time: 694 ms
+GPU Time: 5 ms
+Speedup: 138.8x
 Verification: PASSED
 Verification (first 3x3 block):
-Optimized version:
 260.103 246.72 247.54 
 266.502 254.437 259.212 
 259.721 247.403 257.08 
 -------------------------------------------------
 /data/seismo/kashyap/codes/100days/day002/output3.o
 Creating 1024x1024 matrices...
-Simple version took: 1009 ms
-Optimized version took: 101 ms
+Simple version took: 1067 ms
+Optimized version took: 117 ms
+Verification: PASSED
 Verification (first 3x3 block):
-Simple version:
-265.17 248.757 268.45 
-263.017 246.542 263.147 
-251.159 238.069 254.974 
-Verification (first 3x3 block):
-Optimized version:
-265.17 248.757 268.45 
-263.017 246.542 263.147 
-251.159 238.069 254.974 
+264.159 257.258 250.823 
+256.462 251.636 252.988 
+261.322 257.258 249.169 
 
 Simple CUDA Matrix Multiplication (1024x1024)
 max threads = 32
@@ -112,12 +89,11 @@ Grid size: 32x32
 Block size: 32x32
 
 Results:
-CPU Time: 110 ms
-GPU Time: 3 ms
-Speedup: 36.6667x
+CPU Time: 106 ms
+GPU Time: 10 ms
+Speedup: 10.6x
 Verification: PASSED
 Verification (first 3x3 block):
-Optimized version:
 260.103 246.72 247.54 
 266.502 254.437 259.212 
 259.721 247.403 257.08 
